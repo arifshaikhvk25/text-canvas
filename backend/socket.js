@@ -1,29 +1,3 @@
-// // socket.js
-// import { Server } from "socket.io";
-
-// let io;
-
-// export const initSocket = (server) => {
-//   io = new Server(server, {
-//     cors: { origin: "*" }, // allow requests from any origin
-//   });
-
-//   io.on("connection", (socket) => {
-//     console.log("User connected:", socket.id);
-
-//     socket.on("draw-line", (line) => {
-//       console.log("Received line:", line);
-//       socket.broadcast.emit("remote-draw", line); // send to other users
-//     });
-
-//     socket.on("disconnect", () => {
-//       console.log("User disconnected:", socket.id);
-//     });
-//   });
-// };
-
-// export const getIO = () => io;
-
 import { Server } from "socket.io";
 
 let io;
