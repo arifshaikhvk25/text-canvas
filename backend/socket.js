@@ -1,39 +1,55 @@
+// // socket.js
+// import { Server } from "socket.io";
+
+// let io;
+
+// export const initSocket = (server) => {
+//   io = new Server(server, {
+//     cors: { origin: "*" }, // allow requests from any origin
+//   });
+
+//   io.on("connection", (socket) => {
+//     console.log("User connected:", socket.id);
+
+//     socket.on("draw-line", (line) => {
+//       console.log("Received line:", line);
+//       socket.broadcast.emit("remote-draw", line); // send to other users
+//     });
+
+//     socket.on("disconnect", () => {
+//       console.log("User disconnected:", socket.id);
+//     });
+//   });
+// };
+
+// export const getIO = () => io;
+
 import { Server } from "socket.io";
 
+let io;
+
 export const initSocket = (server) => {
-  // const io = new Server(server, {
-  //   cors: {
-  //     origin: "http://localhost:3000", // your frontend URL
-  //     methods: ["GET", "POST"],
-  //   },
-  // });
-
-  // io.on("connection", (socket) => {
-  //   console.log("🟢 New client connected:", socket.id);
-
-  //   socket.on("disconnect", () => {
-  //     console.log("🔴 Client disconnected:", socket.id);
-  //   });
-  // });
-
-  // return io;
-
-  const io = new Server(server, {
-    cors: {
-      origin: "http://localhost:3000", // your frontend
-      methods: ["GET", "POST"],
-    },
+  io = new Server(server, {
+    cors: { origin: "*" }, // allow requests from any origin
   });
 
-  // Socket connection
   io.on("connection", (socket) => {
-    console.log("🔌 New client connected:", socket.id);
+    console.log("User connected:", socket.id);
 
-    // Send welcome message
-    socket.emit("welcome", "Hello from backend socket 🚀");
+    socket.on("draw-shape", (shape) => {
+      console.log("Received shape:", shape);
+      socket.broadcast.emit("remote-shape", shape); // ✅ send to others
+    });
+
+    socket.on("clear-canvas", () => {
+      console.log("Canvas cleared by:", socket.id);
+      socket.broadcast.emit("remote-clear");
+    });
 
     socket.on("disconnect", () => {
-      console.log("❌ Client disconnected:", socket.id);
+      console.log("User disconnected:", socket.id);
     });
   });
 };
+
+export const getIO = () => io;
